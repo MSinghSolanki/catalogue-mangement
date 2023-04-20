@@ -13,6 +13,7 @@ export const ConfirmationPage = () => {
  const[card,setCard] =useState([]);
  const [originalCard, setOriginalCard] = useState([]);
  const [expandedCardId, setExpandedCardId] = useState(null);
+ const [showChart, setShowChart] = useState(false);
 
 
  const toggleExpandCard = (id) => {
@@ -25,7 +26,7 @@ export const ConfirmationPage = () => {
 
     const generateChartData = (card) => {
         const data = {};
-        card.forEach((product) => {
+        card.map((product) => {
           const category = product.category;
           data[category] = data[category] ? data[category] + 1 : 1;
         });
@@ -82,17 +83,12 @@ export const ConfirmationPage = () => {
 
  useEffect(()=>{
     cardshow();
- })
+ },[])
 
 
  const filtertype = (event, category) => {
     event.preventDefault();
-      setCard(
-        originalCard.filter((e) => {
-          return e.category === category;
-        })
-      );
-    
+    setCard(originalCard.filter((e) => e.category === category));
   };
   
     return (
@@ -152,7 +148,7 @@ export const ConfirmationPage = () => {
   </div>
         ))}
       </div>
-      <canvas id="chart"></canvas>
+    <button> Analyse <canvas id="chart"></canvas></button>
     </div>
    
       
