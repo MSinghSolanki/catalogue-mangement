@@ -1,12 +1,77 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios"
+import {Chart} from 'chart.js/auto'
+
+let chart=null;
+
 export const ConfirmationPage = () => {
+
+
     const location = useLocation();
     const { name, email } = location.state;
  const[card,setCard] =useState([]);
  const [originalCard, setOriginalCard] = useState([]);
- 
+ const [expandedCardId, setExpandedCardId] = useState(null);
+
+
+ const toggleExpandCard = (id) => {
+    if (id === expandedCardId) {
+      setExpandedCardId(null);
+    } else {
+      setExpandedCardId(id);
+    }
+  };
+
+    const generateChartData = (card) => {
+        const data = {};
+        card.forEach((product) => {
+          const category = product.category;
+          data[category] = data[category] ? data[category] + 1 : 1;
+        });
+      
+        const labels = Object.keys(data);
+        const values = Object.values(data);
+      
+        return { labels, values };
+      };
+
+
+      useEffect(() => {
+        if (card.length > 0) {
+          const { labels, values } = generateChartData(card);
+    
+          if (!chart) {
+            // Create new chart if chart is null
+            chart = new Chart(document.getElementById('chart'), {
+              type: 'pie',
+              data: {
+                labels: labels,
+                datasets: [
+                  {
+                    data: values,
+                    backgroundColor: [
+                      '#FF6384',
+                      '#36A2EB',
+                      '#FFCE56',
+                      '#2ecc71',
+                    ],
+                  },
+                ],
+              },
+            });
+          } else {
+            // Update chart data
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = values;
+            chart.update();
+          }
+        }
+      }, [card]);
+
+
+
+
 
  const cardshow=()=>{
     axios.get("https://fakestoreapi.com/products",{}).then((res)=>{
@@ -22,21 +87,14 @@ export const ConfirmationPage = () => {
 
  const filtertype = (event, category) => {
     event.preventDefault();
-    if (category === "all") {
-      setCard(originalCard);
-    } else {
       setCard(
         originalCard.filter((e) => {
           return e.category === category;
         })
       );
-    }
-    return false;
+    
   };
-  useEffect(() => {
-    setCard(originalCard);
-  }, [originalCard]);
-
+  
     return (
        
         <div >
@@ -47,7 +105,7 @@ export const ConfirmationPage = () => {
       </div>
       <div>
         <select onChange={(e) => filtertype(e,e.target.value)}>
-          <option value="">Select a category</option>
+          <option value="">---</option>
           <option value="electronics">Electronics</option>
           <option value="jewelery">Jewelery</option>
           <option value="men's clothing">men's clothing</option>
@@ -69,27 +127,34 @@ export const ConfirmationPage = () => {
                <div className="px-4 py-2 sm:p-4 bg-blue-600 text-white">
               <div className="text-sm uppercase font-bold">{e.category}</div>
             </div>
-            </div>
-
-            <div className="px-4 py-2 sm:p-4">
-              <div className="font-bold text-xl mb-4 mt-9">{e.title}</div>
-              <p className="truncate">{e.description.substring(0, 100)}</p>
-          {e.description.length > 100 && (
-            <button
-              className="text-blue-500 hover:text-blue-700 font-bold"
-              onClick={() => alert(e.description)}
-            >
-              Read more
-            </button>
-          )}
-          </div>
-
            
-          </div>
+
+            {expandedCardId === e.id ? (
+        <div className="absolute inset-0 bg-white bg-opacity-90 z-10 flex flex-col justify-center items-center">
+          <p>{e.description}</p>
+          <button className="mt-4 text-blue-500 hover:text-blue-700 font-bold" onClick={() => toggleExpandCard(e.id)}>
+            Show less
+          </button>
+        </div>
+      ) : (
+        <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent">
+          <button className="text-white font-bold" onClick={() => toggleExpandCard(e.id)}>
+            Read more
+          </button>
+        </div>
+      )}
+    </div>
+
+    <div className="px-4 py-2 sm:p-4">
+      <div className="font-bold text-xl mb-4 mt-9">{e.title}</div>
+      <p className="truncate">{e.description.substring(0, 100)}</p>
+    </div>
+  </div>
         ))}
       </div>
+      <canvas id="chart"></canvas>
     </div>
-    
+   
       
     );
   };
