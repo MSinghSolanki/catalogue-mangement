@@ -1,16 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
-import { Forms } from './components/page1';
-import { Catalague } from './components/page2';
 
+import './App.css';
+import {RegistrationForm} from './components/page1';
+import { Route, Routes } from 'react-router';
+import { ConfirmationPage } from './components/page2';
 function App() {
   return (
-    // <div className=' bg-gray-100 max-w-full max-h-full'>
-    // <Forms></Forms>
-    // </div>
-    <div>
-      <Catalague/>
-    </div>
+    <Routes>
+    <Route exact path="/" element={<RegistrationForm/>} />
+    <Route path="/confirmation" element={<ConfirmationPage/>} />
+  </Routes>
   );
 }
 

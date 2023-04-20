@@ -1,54 +1,33 @@
-import React from "react";
-import axios from "axios";
-import { useState } from "react";
-import {
-    Card,
-    Input,
-    Button,
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-  } from "@material-tailwind/react";
-   
-  export const Forms = ()=>{
+export const RegistrationForm = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/confirmation", { state: { name, email } });
+  };
+  
 
-const [register,setRegister] =useState({
-  email:"",
-    name:"",
-})
-const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRegister({
-      ...register,
-      [name]: value,
-    })
-  }
-
-    return (
-        <div className="flex justify-center ">
-      <Card color="transparent" shadow={false}>
-        <h1 color="gray" className="mt-1 font-normal">
-          Enter your details to register.
-        </h1>
-        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-          <div className="mb-4 flex flex-col gap-6">
-            <Input onChange={handleChange} name="name" size="md" label="Name" />
-            <Input onChange={handleChange} name="email" size="md" label="Email" />
-          </div>
-         
-          <Button className="mt-6 bg-yellow-300 text-white rounded-3xl w-96" 
-          onClick={()=>{
-            axios.post("http://localhost:8080/data",register).then(()=>{
-              setRegister({
-                email:"",
-                name:"",
-              }
-              )
-            })
-          }}>
-            Register
-          </Button>
-        </form>
-      </Card>
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="flex">
+      <label>
+        Name:
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      </label>
+      <br />
+      <label>
+        Email:
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      </label>
       </div>
-    );
-  }
+      <br />
+      <button className="bg-yellow-400 rounded-3xl text-white text-xl w-40" type="submit">Register</button>
+    </form>
+  );
+};
+
