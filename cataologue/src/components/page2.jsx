@@ -38,37 +38,43 @@ export const ConfirmationPage = () => {
       };
 
 
-      useEffect(() => {
-        if (card.length > 0) {
-          const { labels, values } = generateChartData(card);
+      function handleAnalyse() {
+        const { labels, values } = generateChartData(card);
+        const chartElement = document.getElementById('chart');
     
-          if (!chart) {
-            // Create new chart if chart is null
-            chart = new Chart(document.getElementById('chart'), {
-              type: 'pie',
-              data: {
-                labels: labels,
-                datasets: [
-                  {
-                    data: values,
-                    backgroundColor: [
-                      '#FF6384',
-                      '#36A2EB',
-                      '#FFCE56',
-                      '#2ecc71',
-                    ],
-                  },
+        if (!chart) {
+          chart = new Chart(chartElement, {
+            type: 'pie',
+            data: {
+              labels: labels,
+              datasets: [{
+                data: values,
+                backgroundColor: [
+                  '#FF6384',
+                  '#36A2EB',
+                  '#FFCE56',
+                  '#2ecc71',
                 ],
-              },
-            });
-          } else {
-            // Update chart data
-            chart.data.labels = labels;
-            chart.data.datasets[0].data = values;
-            chart.update();
-          }
+              }],
+            },
+            options: {
+              responsive: true
+            }
+          });
+        } else {
+          chart.data.labels = labels;
+          chart.data.datasets[0].data = values;
+          chart.update();
         }
-      }, [card]);
+    
+        setShowChart(true);
+      }
+    
+      useEffect(() => {
+        if (showChart) {
+          handleAnalyse();
+        }
+      }, [showChart]);
 
 
 
@@ -91,7 +97,8 @@ export const ConfirmationPage = () => {
     setCard(originalCard.filter((e) => e.category === category));
   };
   
-    return (
+
+  return (
        
         <div >
             <div>
@@ -111,7 +118,7 @@ export const ConfirmationPage = () => {
 
       </div>
 
-          <div className=" grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
+          <div className=" grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4 ">
         {card.map((e) => (
           <div key={e.id} className="shadow-lg rounded-3xl overflow-hidden">
             <div className="h-40 sm:h-56 md:h-64 lg:h-72 xl:h-80 relative">
@@ -148,7 +155,8 @@ export const ConfirmationPage = () => {
   </div>
         ))}
       </div>
-    <button> Analyse <canvas id="chart"></canvas></button>
+      <button className="bg-yellow-400 text-white rounded-3xl w-44" onClick={handleAnalyse}> Analyse </button>
+      <canvas id="chart"></canvas>
     </div>
    
       
