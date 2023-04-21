@@ -132,10 +132,10 @@ export const ConfirmationPage = () => {
 
       </div>
 
-          <div className=" grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4 ">
+          <div className=" grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
         {card.map((e) => (
-          <div key={e.id} className="shadow-lg rounded-3xl overflow-hidden">
-            <div className="h-40 sm:h-56 md:h-64 lg:h-72 xl:h-80 relative">
+          <div key={e.id} className="shadow-lg rounded-3xl overflow-hidden hover:scale-105 duration-300">
+            <div className="h-40 sm:h-56 md:h-64 lg:h-72 xl:h-80 relative ">
               <img
                 className="w-full h-full object-cover"
                 src={e.image}
