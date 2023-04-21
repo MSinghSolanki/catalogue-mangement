@@ -10,6 +10,7 @@ export const ConfirmationPage = () => {
 
     const location = useLocation();
     const { name, email } = location.state;
+
  const[card,setCard] =useState([]);
  const [originalCard, setOriginalCard] = useState([]);
  const [expandedCardId, setExpandedCardId] = useState(null);
@@ -107,18 +108,15 @@ export const ConfirmationPage = () => {
        
         <div >
             <div>
-              <div>
-                
-            <div className="flex bg-blue-600 justify-between">
-              <div>
-              <h1>Catalouge Management</h1>
-              </div>
-              <div className="flex">
-           <p>Name-{name}</p><br></br>
-      <p className="ml-5">Email-{email}</p>
-      </div>
-      </div>
-      </div>
+             <div className="bg-blue-600 py-3">
+  <div className="container flex justify-between items-center mx-auto">
+    <h1 className="text-white text-xl font-bold">Catalog Management</h1>
+    <div className="flex items-center">
+      <p className="text-white mr-4">Name - {name}</p>
+      <p className="text-white">Email - {email}</p>
+    </div>
+  </div>
+</div>
       <div>
         <select onChange={(e) => filtertype(e,e.target.value)}>
           <option value="">---</option>
