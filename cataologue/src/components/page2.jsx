@@ -116,16 +116,17 @@ export const ConfirmationPage = () => {
       <p className="text-white">Email - {email}</p>
     </div>
   </div>
-</div>
-      <div>
+
+      <div className="lg:pl-96 sm:pl-64 xl:pl-96">
         <select onChange={(e) => filtertype(e,e.target.value)}>
-          <option value="">---</option>
+          <option value="">Select</option>
           <option value="all">All</option>
           <option value="electronics">Electronics</option>
           <option value="jewelery">Jewelery</option>
           <option value="men's clothing">men's clothing</option>
           <option value="women's clothing">women's clothing</option>
         </select>
+        </div>
       </div>
 
       </div>
