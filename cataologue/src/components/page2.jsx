@@ -94,7 +94,12 @@ export const ConfirmationPage = () => {
 
  const filtertype = (event, category) => {
     event.preventDefault();
+    if(category==="all"){
+      setCard(originalCard)
+    }
+    else{
     setCard(originalCard.filter((e) => e.category === category));
+    }
   };
   
 
@@ -102,13 +107,22 @@ export const ConfirmationPage = () => {
        
         <div >
             <div>
-            <div className="flex bg-blue-500">
-           <p> {name}</p>
-      <p className="ml-5">{email}</p>
+              <div>
+                
+            <div className="flex bg-blue-600 justify-between">
+              <div>
+              <h1>Catalouge Management</h1>
+              </div>
+              <div className="flex">
+           <p>Name-{name}</p><br></br>
+      <p className="ml-5">Email-{email}</p>
+      </div>
+      </div>
       </div>
       <div>
         <select onChange={(e) => filtertype(e,e.target.value)}>
           <option value="">---</option>
+          <option value="all">All</option>
           <option value="electronics">Electronics</option>
           <option value="jewelery">Jewelery</option>
           <option value="men's clothing">men's clothing</option>
